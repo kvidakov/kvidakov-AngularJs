@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Simple todo application">
+    <meta name="author" content="Karlo Vidakovic">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+    <script src="myScript.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyC88yC2dodvgKIMRzTXPF7UNjpSTprcLaU",
+            authDomain: "todoapp-cbbf0.firebaseapp.com",
+            databaseURL: "https://todoapp-cbbf0.firebaseio.com",
+            storageBucket: "todoapp-cbbf0.appspot.com",
+            messagingSenderId: "1066055722567"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+
+    <title>To do list</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body ng-app="myApp">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="index.html">TO DO LIST</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="contact.php">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('Slike/todo_list4.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>TO DO LIST</h1>
+                        <hr class="small">
+                        <span class="subheading">Write down Your jobs and never ever forget to finish them!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container" >
+        <div class="row" id="contentBackground">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" id="borderBox">
+                <fb:login-button data-auto-logout-link="true" scope="public_profile,email" size="large"></fb:login-button>
+                <div class="post-preview" ng-controller="MainController" >
+                    <h2 class="post-title">
+                        Add new job to the list:
+                    </h2>
+
+                    <form ng-submit="addJob()">
+                        <input type="text" ng-model="jobInputed" placeholder="Add jobs on the list"><br>
+                        <input type="submit" class="btn btn-default" value="Add job" style="margin-top: 0.5em;">
+                    </form>
+                    <hr>
+
+                    <div class="form-inline">
+                        <input type="submit" class="btn btn-default" value="Job/s done" ng-click="JobsDone()" style="margin-top: 0.5em;">
+                        <input type="button" id="ShowHideButton" class="btn btn-default" value="Show finished jobs" ng-click="showJobsDone = !showJobsDone" style="margin-top: 0.5em;">
+                    </div>
+                    <h3 class="post-title" id="h3title">
+                        Unfinished jobs:
+                    </h3>
+                    <hr>
+
+                    <ol ng-repeat="x in jobsList" ng-hide="showJobsDone">
+                        <li>
+                            <form>
+                                <span ng-bind="$index + 1"></span>
+                                <span ng-bind="x.jobTodo"></span>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default">
+                                        <input type="checkbox" autocomplete="off" checked ng-model="x.jobDone">
+                                        <span class="glyphicons glyphicons-ok"></span>
+                                    </label>
+                                </div>
+                            </form>
+                        </li>
+                    </ol>
+                    <ol ng-show="showJobsDone" ng-repeat="y in jobsDoneList">
+                        <li>
+                            <form>
+                                <span ng-bind="$index + 1"></span>
+                                <span ng-bind="y.jobTodo"></span>
+                            </form>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    <script src="//connect.facebook.net/en_US/sdk.js"></script>
+    <script>
+        FB.init({
+            /**********************************************************************
+             * TODO(Developer): Change the value below with your Facebook app ID. *
+             **********************************************************************/
+            appId      : '<YOUR_FACEBOOK_APP_ID>',
+            status     : true,
+            xfbml      : true,
+            version    : 'v2.6'
+        });
+    </script>
+</body>
+</html>
