@@ -10,18 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
     <script src="myScript.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyC88yC2dodvgKIMRzTXPF7UNjpSTprcLaU",
-            authDomain: "todoapp-cbbf0.firebaseapp.com",
-            databaseURL: "https://todoapp-cbbf0.firebaseio.com",
-            storageBucket: "todoapp-cbbf0.appspot.com",
-            messagingSenderId: "1066055722567"
-        };
-        firebase.initializeApp(config);
-    </script>
+
 
 
     <title>To do list</title>
@@ -95,7 +84,19 @@
     <div class="container" >
         <div class="row" id="contentBackground">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" id="borderBox">
-                <fb:login-button data-auto-logout-link="true" scope="public_profile,email" size="large"></fb:login-button>
+                <div class="row mdl-card__supporting-text mdl-color-text--grey-600">
+                    <p>Log in with your Facebook account below.</p>
+
+                    <!-- Button that handles sign-in/sign-out -->
+                    <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Log in with Facebook</button>
+
+                    <!-- Container where we'll display the user details -->
+                        <div class="quickstart-user-details-container">
+                            <span id="quickstart-sign-in-status"></span>
+                            <div id="quickstart-account-details"></div>
+                            <p ng-hide="true" id="quickstart-oauthtoken"></p>
+                        </div>
+                </div>
                 <div class="post-preview" ng-controller="MainController" >
                     <h2 class="post-title">
                         Add new job to the list:
@@ -181,7 +182,18 @@
         </div>
     </footer>
 
-
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyC88yC2dodvgKIMRzTXPF7UNjpSTprcLaU",
+            authDomain: "todoapp-cbbf0.firebaseapp.com",
+            databaseURL: "https://todoapp-cbbf0.firebaseio.com",
+            storageBucket: "todoapp-cbbf0.appspot.com",
+            messagingSenderId: "1066055722567"
+        };
+        firebase.initializeApp(config);
+    </script>
 
 
     <script src="//connect.facebook.net/en_US/sdk.js"></script>
@@ -190,7 +202,7 @@
             /**********************************************************************
              * TODO(Developer): Change the value below with your Facebook app ID. *
              **********************************************************************/
-            appId      : '<YOUR_FACEBOOK_APP_ID>',
+            appId      : '1825175384365743',
             status     : true,
             xfbml      : true,
             version    : 'v2.6'
